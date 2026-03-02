@@ -18,3 +18,14 @@ body {
   flex: 1;
   height: 100vh;
 }
+
+.fruitMarker {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background-image: url("icons/fruit.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
