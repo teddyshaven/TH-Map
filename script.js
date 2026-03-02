@@ -15,6 +15,19 @@ const layers = {
   quest: L.layerGroup().addTo(map)
 };
 
+fruits.forEach(fruit => {
+  L.circleMarker(fruit.coords, {
+    radius: 6,
+    fillColor: "#ff4da6",
+    color: "#ffffff",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.9
+  })
+  .bindPopup(fruit.name)
+  .addTo(map);
+});
+
 // === Coordinate Capture Tool ===
 
 map.on('click', function (e) {
