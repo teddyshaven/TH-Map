@@ -1,13 +1,12 @@
-const fruits = [
+const fruitLocations = [
   {
     id: 1,
-    x: 62,
-    y: 41,
+    coords: [62, 41],
 
-    seasons: {
+    fruits: {
       all: ["Azureberry", "Sunapple", "Ghost Berry"],
       spring: ["Bloodberry", "Emberberry", "Nightshade Berry", "Skydrop"],
-      summer: ["Heartgleam", "Honeycran", "Nightblush", "solberry", "Tigermelon", "Velvetnight"],
+      summer: ["Heartgleam", "Honeycran", "Nightblush", "Solberry", "Tigermelon", "Velvenight"],
       fall: ["Amberburst", "Mellowspike", "Mireberry", "Mirthshade", "Scarletip", "Seafallow"],
       winter: ["Faepeach", "Frostgleam", "Icerose", "Lunabright", "Twilipuff", "Velvitfrost"]
     }
