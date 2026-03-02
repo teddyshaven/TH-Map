@@ -20,11 +20,62 @@
     <label><input type="checkbox" data-category="magic" checked> Magical Spots</label>
     <label><input type="checkbox" data-category="quest" checked> Quests</label>
   </div>
+
+  <h3>Season</h3>
+
+<select id="seasonSelect">
+  <option value="all">All Season</option>
+  <option value="spring">Spring</option>
+  <option value="summer">Summer</option>
+  <option value="fall">Fall</option>
+  <option value="winter">Winter</option>
+</select>
+  
 </div>
 
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="script.js"></script>
+
+  <script src="fruits.js"></script>
+
+<script>
+const map = document.getElementById("map");
+const seasonSelect = document.getElementById("seasonSelect");
+
+function drawFruits() {
+
+  document.querySelectorAll(".fruitMarker")
+    .forEach(m => m.remove());
+
+  const season = seasonSelect.value;
+
+  fruits.forEach(fruit => {
+
+    let items = [
+      ...fruit.seasons.all,
+      ...(fruit.seasons[season] || [])
+    ];
+
+    items.forEach(item => {
+
+      const marker = document.createElement("div");
+      marker.className = "fruitMarker";
+
+      marker.style.left = fruit.x + "%";
+      marker.style.top = fruit.y + "%";
+
+      marker.title = item;
+
+      map.appendChild(marker);
+    });
+  });
+}
+
+seasonSelect.addEventListener("change", drawFruits);
+
+drawFruits();
+</script>
 </body>
 </html>
