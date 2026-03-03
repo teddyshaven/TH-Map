@@ -1,116 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Teddy's Haven Companion Map</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <link rel="stylesheet" href="style.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fruit Map</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link
+ rel="stylesheet"
+ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 </head>
+
 <body>
-
-<div id="sidebar">
-  <h1>🧸 Teddy's Haven</h1>
-  <p class="subtitle">Explorer’s Companion</p>
-
-  <div class="filter-group">
-<h3>Map Filters</h3>
-
-<div id="mapLegend">
-
-  <label>
-    <input type="checkbox" data-layer="home" checked>
-    <span class="legend-dot home"></span>
-    Home
-  </label>
-
-  <label>
-    <input type="checkbox" data-layer="fruits" checked>
-    <span class="legend-dot fruits"></span>
-    Fruits
-  </label>
-
-  <label>
-    <input type="checkbox" data-layer="stone" checked>
-    <span class="legend-dot stone"></span>
-    Stone
-  </label>
-
-  <label>
-    <input type="checkbox" data-layer="ore" checked>
-    <span class="legend-dot ore"></span>
-    Ore
-  </label>
-
-  <label>
-    <input type="checkbox" data-layer="creatures" checked>
-    <span class="legend-dot creatures"></span>
-    Creatures
-  </label>
-
-  <label>
-    <input type="checkbox" data-layer="visitors" checked>
-    <span class="legend-dot visitors"></span>
-    Magical Visitors
-  </label>
-
-</div>
-
-
-  <h3>Season</h3>
-
-<select id="seasonSelect">
-  <option value="all">All Season</option>
-  <option value="spring">Spring</option>
-  <option value="summer">Summer</option>
-  <option value="fall">Fall</option>
-  <option value="winter">Winter</option>
-</select>
-  
-</div>
-      </div>
 
 <div id="map"></div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="fruits.js" defer></script>
-<script src="script.js" defer></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module" src="script.js"></script>
 
-<script>
-const map = document.getElementById("map");
-const seasonSelect = document.getElementById("seasonSelect");
-
-function drawFruits() {
-
-  document.querySelectorAll(".fruitMarker")
-    .forEach(m => m.remove());
-
-  const season = seasonSelect.value;
-
-  fruits.forEach(fruit => {
-
-    let items = [
-      ...fruit.seasons.all,
-      ...(fruit.seasons[season] || [])
-    ];
-
-    items.forEach(item => {
-
-      const marker = document.createElement("div");
-      marker.className = "fruitMarker";
-
-      marker.style.left = fruit.x + "%";
-      marker.style.top = fruit.y + "%";
-
-      marker.title = item;
-
-      map.appendChild(marker);
-    });
-  });
-}
-
-seasonSelect.addEventListener("change", drawFruits);
-
-drawFruits();
-</script>
 </body>
 </html>
