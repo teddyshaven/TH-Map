@@ -4,7 +4,7 @@ const map = L.map('map', {
 });
 
 const bounds = [[0,0], [4096,4096]];
-const image = L.imageOverlay('worldmap.png', bounds).addTo(map);
+L.imageOverlay('worldmap.png', bounds).addTo(map);
 map.fitBounds(bounds);
 
 const layers = {
