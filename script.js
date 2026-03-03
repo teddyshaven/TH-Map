@@ -16,6 +16,18 @@ const layers = {
   visitors: L.layerGroup().addTo(layers.visitors)
 };
 
+L.circleMarker(location.coords, {
+  radius: 6,
+  fillColor: fruitColors[fruit],
+  color: "#222",
+  weight: 1,
+  fillOpacity: 0.95
+})
+.bindPopup(`<b>${fruit}</b>`)
+.addTo(layers.fruits);
+
+
+
 let currentSeason = "spring";
 
 function buildFruitPopup(location) {
@@ -128,7 +140,22 @@ function getActiveFruits(location) {
   return [...allFruit, ...seasonal];
 }
 
+document.querySelectorAll("[data-layer]").forEach(toggle => {
 
+  toggle.addEventListener("change", e => {
+
+    const layerName = e.target.dataset.layer;
+    const layer = layers[layerName];
+
+    if (e.target.checked) {
+      map.addLayer(layer);
+    } else {
+      map.removeLayer(layer);
+    }
+
+  });
+
+});
 
 document.querySelectorAll("#sidebar input[type=checkbox]")
   .forEach(box => {
