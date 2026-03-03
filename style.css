@@ -18,4 +18,5 @@ html, body {
 
 #map {
   flex: 1;
+  height: 100%;
 }
