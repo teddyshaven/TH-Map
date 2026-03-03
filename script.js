@@ -1,31 +1,67 @@
-import { fruitLocations } from "./fruits.js";
-
-// Create map
+// --- MAP SETUP ---
 const map = L.map("map", {
-  crs: L.CRS.Simple
+  crs: L.CRS.Simple,
+  minZoom: -2
 });
 
-// Image/map bounds (CHANGE if needed)
-const bounds = [
-  [0, 0],
-  [100, 100]
-];
+// IMPORTANT: matches your 4096 image
+const bounds = [[0,0],[4096,4096]];
 
-// Example image overlay
-const image = L.imageOverlay("map.png", bounds).addTo(map);
+// THIS IS THE LINE THAT SHOWS YOUR MAP
+L.imageOverlay("worldmap.png", bounds).addTo(map);
 
 map.fitBounds(bounds);
 
-// Add markers
+
+// --- LAYERS ---
+const layers = {
+  fruits: L.layerGroup().addTo(map)
+};
+
+
+// --- FRUIT COLOURS ---
+const fruitColors = {
+  "Azureberry": "#4cc9f0",
+  "Sunapple": "#ffd166",
+  "Ghost Berry": "#cdb4db",
+  "Bloodberry": "#e63946",
+  "Emberberry": "#ff6b6b",
+  "Nightshade Berry": "#560bad",
+  "Skydrop": "#4895ef"
+};
+
+
+// --- CREATE MARKERS ---
 fruitLocations.forEach(location => {
 
-  const popupContent = `
-    <b>Location ${location.id}</b><br>
-    All Fruits:<br>
-    ${location.fruits.all.join(", ")}
-  `;
+  Object.values(location.fruits).flat().forEach(fruit => {
 
-  L.marker(location.coords)
-    .addTo(map)
-    .bindPopup(popupContent);
+    if (!fruitColors[fruit]) return;
+
+    L.circleMarker(location.coords, {
+      radius: 6,
+      fillColor: fruitColors[fruit],
+      color: "#222",
+      weight: 1,
+      fillOpacity: 0.9
+    })
+    .bindPopup(`<b>${fruit}</b>`)
+    .addTo(layers.fruits);
+
+  });
+
+});
+
+
+// --- LEGEND TOGGLE ---
+document
+  .getElementById("toggle-fruits")
+  .addEventListener("change", e => {
+
+    if (e.target.checked) {
+      map.addLayer(layers.fruits);
+    } else {
+      map.removeLayer(layers.fruits);
+    }
+
 });
