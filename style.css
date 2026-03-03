@@ -15,6 +15,18 @@ body {
   height: 100vh;
 }
 
+#mapLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+#mapLegend label {
+  cursor: pointer;
+  font-size: 14px;
+}
+
 #map {
   flex: 1;
   height: 100vh;
