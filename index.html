@@ -3,35 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <title>Teddy's Haven Map</title>
-
 <link
- rel="stylesheet"
- href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
-
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
 <div id="container">
-
   <div id="sidebar">
     <h2>Legend</h2>
-
     <label>
       <input type="checkbox" id="toggle-fruits" checked>
       Fruits
     </label>
   </div>
-
-  <div id="map"></div>
-
+  <div id="map-wrapper">
+    <div id="map"></div>
+    <div id="coord-display">Click map for coords</div>
+  </div>
 </div>
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="fruits.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
