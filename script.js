@@ -19,7 +19,7 @@ const layers = {
 // ---------------- FRUIT COLOURS ----------------
 const fruitColors = {
   // Persistent
-  "Azureberry":        "#1a3a6b", // dark blue
+  "Azureberry":        "#2196f3", // bright blue
   "Ghost Berry":       "#e8e4dc", // off-white
   // Spring
   "Skydrop Berry":     "#1b3a6e", // midnight blue
