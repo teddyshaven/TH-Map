@@ -72,15 +72,8 @@ function drawFruits() {
 
     } else if (location.type === "seasonal") {
       if (activeSeason === "all") {
-        // Show all four seasons stacked at this location
-        Object.entries(location.fruits).forEach(([season, name]) => {
-          color = fruitColors[name] || "#aaaaaa";
-          L.circleMarker(location.coords, {
-            radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
-          })
-          .bindPopup(`<b>${name}</b><br><i>${season.charAt(0).toUpperCase() + season.slice(1)}</i>`)
-          .addTo(layers.fruits);
-        });
+        // Hide seasonal locations when "All Year" is selected
+        return;
       } else {
         // Show only the fruit for the active season
         fruitName = location.fruits[activeSeason];
