@@ -19,34 +19,40 @@ const layers = {
 // ---------------- FRUIT COLOURS ----------------
 const fruitColors = {
   // Persistent
-  "Azureberry":        "#4cc9f0",
-  "Ghost Berry":       "#dddddd",
+  "Azureberry":        "#1a3a6b", // dark blue
+  "Ghost Berry":       "#e8e4dc", // off-white
   // Spring
-  "Skydrop Berry":     "#4895ef",
-  "Nightshade Berry":  "#560bad",
-  "Emberberry":        "#ff8800",
-  "Bloodberry":        "#e63946",
+  "Skydrop Berry":     "#1b3a6e", // midnight blue
+  "Nightshade Berry":  "#1a0033", // darkest purple
+  "Emberberry":        "#e8a020", // orange-yellow
+  "Bloodberry":        "#6b0a0a", // dark red
+  "Greenwhistle Apple":"#8db87a", // pale forest green
   // Summer
-  "Solberry":          "#ffb703",
-  "Nightblush Berry":  "#c77dff",
-  "Tigermelon":        "#fb8500",
-  "Velvenight Berry":  "#6a0572",
-  "Heartgleam":        "#ff6b9d",
-  "Honeycran Berry":   "#f4a261",
+  "Solberry":          "#a0621a", // autumn bronze
+  "Nightblush Berry":  "#5c1a2e", // muted burgundy
+  "Tigermelon":        "#2d6b2d", // rich green
+  "Velvenight Berry":  "#0d0d2b", // blue-black
+  "Heartgleam":        "#7a1a1a", // muted dark red
+  "Honeycran Berry":   "#8b5e1a", // golden brown
+  "Sunapple":          "#cc1f1f", // vibrant red
   // Fall
-  "Mirthshade":        "#b5838d",
-  "Mireberry":         "#6d6875",
-  "Mellowspike":       "#a8dadc",
-  "Scarletip":         "#e76f51",
-  "Seafallow Berry":   "#52b788",
-  "Amberburst":        "#e9c46a",
+  "Mirthshade":        "#5b1a8b", // rich purple
+  "Mireberry":         "#1a4d1a", // forest green
+  "Mellowspike":       "#c8e88a", // pale lime green
+  "Scarletip":         "#4d0000", // darkest red
+  "Seafallow Berry":   "#0a0a2e", // darkest midnight blue
+  "Amberburst":        "#d4a800", // gold-yellow
+  "Amberfall Apple":   "#c87800", // amber
   // Winter
-  "Velvitfrost Berry":  "#dde5b6",
-  "Twilipuff":         "#bde0fe",
-  "Faepeach":          "#ffccd5",
-  "Frostgleam":        "#caf0f8",
-  "Icerose Berry":     "#90e0ef",
-  "Lunabright":        "#e2cfee"
+  "Velvitfrost Berry": "#6a3a8b", // wintery purple
+  "Twilipuff":         "#d8c8f0", // pale purple
+  "Faepeach":          "#f5c8d0", // soft pink
+  "Frostgleam":        "#a8d4f0", // light blue
+  "Icerose Berry":     "#b30000", // crimson
+  "Lunabright":        "#a8e8c8", // mint green
+  "Frostveil Apple":   "#c8e8f5", // icy blue
+  // Coming later
+  "Royal Peach":       "#f5a0b8"  // pink
 };
 
 // ---------------- ACTIVE SEASON ----------------
