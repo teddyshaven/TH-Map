@@ -9,11 +9,11 @@ map.fitBounds(bounds);
 
 // ---------------- LAYERS ----------------
 const layers = {
-  fruits:          L.layerGroup().addTo(map),
-  stone:           L.layerGroup().addTo(map),
-  crystal:         L.layerGroup().addTo(map),
-  creatures:       L.layerGroup().addTo(map),
-  magicalVisitors: L.layerGroup().addTo(map)
+  fruits:          L.layerGroup(),
+  stone:           L.layerGroup(),
+  crystal:         L.layerGroup(),
+  creatures:       L.layerGroup(),
+  magicalVisitors: L.layerGroup()
 };
 
 // ---------------- FRUIT COLOURS ----------------
@@ -328,16 +328,66 @@ function clearSearchHighlights() {
   searchHighlightLayers = [];
 }
 
-function highlightAllCoords(allCoords, category) {
+function highlightAllCoords(allCoords, category, label) {
   clearSearchHighlights();
 
-  // Hide all layers except the relevant one
+  // Hide all layers
   Object.values(layers).forEach(l => map.removeLayer(l));
-  if (category === "Fruit") map.addLayer(layers.fruits);
-  else if (category === "Crystal") map.addLayer(layers.crystal);
-  else if (category === "Creature" || category === "Resource") map.addLayer(layers.creatures);
 
-  // Fit map to show all matching markers, zoomed out enough to see them all
+  // Build a temporary layer with only the matching markers
+  const tempLayer = L.layerGroup().addTo(map);
+  searchHighlightLayers.push(tempLayer);
+
+  allCoords.forEach(coords => {
+    // Draw the matching marker
+    let color = "#aaaaaa";
+    let popupHtml = `<b>${label}</b>`;
+
+    if (category === "Fruit") {
+      color = fruitColors[label] || "#aaaaaa";
+      L.circleMarker(coords, {
+        radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
+      }).bindPopup(popupHtml).addTo(tempLayer);
+    } else if (category === "Crystal") {
+      const ctype = crystalTypes[label] || { color: "#a78bfa", info: null };
+      color = ctype.color;
+      popupHtml = ctype.info ? `<b>${label}</b><br><i>⚠️ ${ctype.info}</i>` : `<b>${label}</b>`;
+      L.circleMarker(coords, {
+        radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
+      }).bindPopup(popupHtml).addTo(tempLayer);
+    } else if (category === "Creature" || category === "Resource") {
+      // Find the creature name from label
+      const creatureName = category === "Resource"
+        ? Object.keys(creatureTypes).find(k => creatureTypes[k].resource === label)
+        : label;
+      const ctype = creatureTypes[creatureName] || { color: "#e05252" };
+      color = ctype.color;
+
+      // Draw spawn radius circle
+      L.circle(coords, {
+        radius: 150,
+        color: "#e05252", weight: 1.5, opacity: 0.6,
+        fillColor: "#e05252", fillOpacity: 0.08
+      }).addTo(tempLayer);
+
+      const iconHtml = ctype.icon ? `<img src="${ctype.icon}" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto 6px auto;">` : "";
+      const craftingHtml = ctype.crafting ? `<div style="margin-top:6px;font-size:11px;color:#666;"><b>Used in:</b> ${ctype.crafting}</div>` : "";
+      popupHtml = `<div style="text-align:center;min-width:120px;">${iconHtml}<b style="font-size:13px;">${creatureName}</b><br><span style="font-size:12px;color:#444;">${ctype.resource || ""}</span>${craftingHtml}</div>`;
+
+      L.circleMarker(coords, {
+        radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
+      }).bindPopup(popupHtml).addTo(tempLayer);
+    }
+
+    // Pulse highlight ring
+    const ring = L.circleMarker(coords, {
+      radius: 16, color: "#ffffff", weight: 3,
+      fillColor: "#ffffff", fillOpacity: 0.2, opacity: 1
+    }).addTo(map);
+    searchHighlightLayers.push(ring);
+  });
+
+  // Fit map to matching markers
   if (allCoords.length === 1) {
     map.setView(allCoords[0], 1);
   } else {
@@ -345,21 +395,13 @@ function highlightAllCoords(allCoords, category) {
     map.fitBounds(L.latLngBounds(latLngs).pad(0.3));
   }
 
-  // Pulse highlight rings on each matching coord
-  allCoords.forEach(coords => {
-    const ring = L.circleMarker(coords, {
-      radius: 16,
-      color: "#ffffff",
-      weight: 3,
-      fillColor: "#ffffff",
-      fillOpacity: 0.2,
-      opacity: 1
-    }).addTo(map);
-    searchHighlightLayers.push(ring);
-  });
-
-  // Fade out after 3 seconds
-  setTimeout(() => clearSearchHighlights(), 3000);
+  // Fade rings after 3 seconds (keep markers)
+  setTimeout(() => {
+    searchHighlightLayers.forEach(l => {
+      if (l !== tempLayer) map.removeLayer(l);
+    });
+    searchHighlightLayers = searchHighlightLayers.filter(l => l === tempLayer);
+  }, 3000);
 }
 
 function restoreAllLayers() {
@@ -403,7 +445,7 @@ searchInput.addEventListener("input", function () {
     item.className = "search-result-item";
     item.innerHTML = `<span class="search-result-label">${result.label}</span><span class="search-result-category">${result.category}</span>`;
     item.addEventListener("click", () => {
-      highlightAllCoords(result.allCoords, result.category);
+      highlightAllCoords(result.allCoords, result.category, result.label);
       searchResults.style.display = "none";
       searchInput.value = result.label;
     });
