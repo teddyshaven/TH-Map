@@ -269,3 +269,115 @@ map.on("click", e => {
   copyToClipboard(coordText);
   console.log(coordText);
 });
+
+// ---------------- SEARCH ----------------
+let highlightCircle = null;
+
+function buildSearchIndex() {
+  const index = [];
+
+  // Fruits
+  fruitLocations.forEach(location => {
+    if (location.type === "persistent") {
+      index.push({ label: location.fruit, category: "Fruit", coords: location.coords });
+    } else if (location.type === "seasonal") {
+      Object.entries(location.fruits).forEach(([season, name]) => {
+        if (!index.find(e => e.label === name && e.category === "Fruit")) {
+          index.push({ label: name, category: "Fruit", coords: location.coords, season });
+        }
+      });
+    }
+  });
+
+  // Crystals
+  crystalLocations.forEach(location => {
+    (location.crystals || []).forEach(name => {
+      index.push({ label: name, category: "Crystal", coords: location.coords });
+    });
+  });
+
+  // Creatures — index both creature name and resource name
+  creatureLocations.forEach(location => {
+    (location.creatures || []).forEach(name => {
+      const type = creatureTypes[name];
+      index.push({ label: name, category: "Creature", coords: location.coords });
+      if (type && type.resource) {
+        index.push({ label: type.resource, category: "Resource", coords: location.coords, creatureName: name });
+      }
+    });
+  });
+
+  return index;
+}
+
+function showHighlight(coords) {
+  if (highlightCircle) map.removeLayer(highlightCircle);
+  highlightCircle = L.circleMarker(coords, {
+    radius: 18,
+    color: "#ffffff",
+    weight: 3,
+    fillColor: "#ffffff",
+    fillOpacity: 0.25,
+    opacity: 0.9
+  }).addTo(map);
+
+  // Fade out after 3 seconds
+  setTimeout(() => {
+    if (highlightCircle) {
+      map.removeLayer(highlightCircle);
+      highlightCircle = null;
+    }
+  }, 3000);
+}
+
+const searchInput = document.getElementById("search-input");
+const searchResults = document.getElementById("search-results");
+
+searchInput.addEventListener("input", function () {
+  const query = this.value.trim().toLowerCase();
+  searchResults.innerHTML = "";
+
+  if (query.length < 2) {
+    searchResults.style.display = "none";
+    return;
+  }
+
+  const index = buildSearchIndex();
+  const matches = index.filter(e => e.label.toLowerCase().includes(query));
+
+  // Deduplicate by label
+  const seen = new Set();
+  const unique = matches.filter(e => {
+    const key = e.label + e.category;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  if (unique.length === 0) {
+    searchResults.style.display = "none";
+    return;
+  }
+
+  unique.slice(0, 10).forEach(result => {
+    const item = document.createElement("div");
+    item.className = "search-result-item";
+    item.innerHTML = `<span class="search-result-label">${result.label}</span><span class="search-result-category">${result.category}</span>`;
+    item.addEventListener("click", () => {
+      map.setView(result.coords, 1);
+      showHighlight(result.coords);
+      searchResults.style.display = "none";
+      searchInput.value = result.label;
+    });
+    searchResults.appendChild(item);
+  });
+
+  searchResults.style.display = "block";
+});
+
+// Hide results when clicking outside
+document.addEventListener("click", e => {
+  if (!document.getElementById("search-wrapper").contains(e.target)) {
+    searchResults.style.display = "none";
+  }
+});
