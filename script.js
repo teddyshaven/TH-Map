@@ -19,57 +19,80 @@ const layers = {
 
 // ---------------- FRUIT COLOURS ----------------
 const fruitColors = {
-  "Azureberry":       "#4cc9f0",
-  "Sunapple":         "#ffd166",
-  "Ghost Berry":      "#dddddd",
-  "Bloodberry":       "#e63946",
-  "Emberberry":       "#ff8800",
-  "Nightshade Berry": "#560bad",
-  "Skydrop":          "#4895ef",
-  "Heartgleam":       "#ff6b9d",
-  "Honeycran":        "#f4a261",
-  "Nightblush":       "#c77dff",
-  "Solberry":         "#ffb703",
-  "Tigermelon":       "#fb8500",
-  "Velvenight":       "#6a0572",
-  "Amberburst":       "#e9c46a",
-  "Mellowspike":      "#a8dadc",
-  "Mireberry":        "#6d6875",
-  "Mirthshade":       "#b5838d",
-  "Scarletip":        "#e76f51",
-  "Seafallow":        "#52b788",
-  "Faepeach":         "#ffccd5",
-  "Frostgleam":       "#caf0f8",
-  "Icerose":          "#90e0ef",
-  "Lunabright":       "#e2cfee",
-  "Twilipuff":        "#bde0fe",
-  "Velvitfrost":      "#dde5b6"
+  // Persistent
+  "Azureberry":        "#4cc9f0",
+  "Ghost Berry":       "#dddddd",
+  // Spring
+  "Skydrop Berry":     "#4895ef",
+  "Nightshade Berry":  "#560bad",
+  "Emberberry":        "#ff8800",
+  "Bloodberry":        "#e63946",
+  // Summer
+  "Solberry":          "#ffb703",
+  "Nightblush Berry":  "#c77dff",
+  "Tigermelon":        "#fb8500",
+  "Velvenight Berry":  "#6a0572",
+  "Heartgleam":        "#ff6b9d",
+  "Honeycran Berry":   "#f4a261",
+  // Fall
+  "Mirthshade":        "#b5838d",
+  "Mireberry":         "#6d6875",
+  "Mellowspike":       "#a8dadc",
+  "Scarletip":         "#e76f51",
+  "Seafallow Berry":   "#52b788",
+  "Amberburst":        "#e9c46a",
+  // Winter
+  "Velvitfrost Berry":  "#dde5b6",
+  "Twilipuff":         "#bde0fe",
+  "Faepeach":          "#ffccd5",
+  "Frostgleam":        "#caf0f8",
+  "Icerose Berry":     "#90e0ef",
+  "Lunabright":        "#e2cfee"
 };
 
 // ---------------- ACTIVE SEASON ----------------
-let activeSeason = "all";
+let activeSeason = "spring";
 
 // ---------------- DRAW FRUITS ----------------
 function drawFruits() {
   layers.fruits.clearLayers();
+
   fruitLocations.forEach(location => {
-    let fruitsToShow = [...location.fruits.all];
-    if (activeSeason !== "all" && location.fruits[activeSeason]) {
-      fruitsToShow = [...fruitsToShow, ...location.fruits[activeSeason]];
-    }
-    if (activeSeason === "all") {
-      Object.values(location.fruits).flat().forEach(f => {
-        if (!fruitsToShow.includes(f)) fruitsToShow.push(f);
-      });
-    }
-    fruitsToShow.forEach(fruit => {
-      const color = fruitColors[fruit] || "#aaaaaa";
+    let fruitName, color;
+
+    if (location.type === "persistent") {
+      // Always show, regardless of season
+      fruitName = location.fruit;
+      color = fruitColors[fruitName] || "#aaaaaa";
       L.circleMarker(location.coords, {
         radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
       })
-      .bindPopup(`<b>${fruit}</b>`)
+      .bindPopup(`<b>${fruitName}</b><br><i>Year-round</i>`)
       .addTo(layers.fruits);
-    });
+
+    } else if (location.type === "seasonal") {
+      if (activeSeason === "all") {
+        // Show all four seasons stacked at this location
+        Object.entries(location.fruits).forEach(([season, name]) => {
+          color = fruitColors[name] || "#aaaaaa";
+          L.circleMarker(location.coords, {
+            radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
+          })
+          .bindPopup(`<b>${name}</b><br><i>${season.charAt(0).toUpperCase() + season.slice(1)}</i>`)
+          .addTo(layers.fruits);
+        });
+      } else {
+        // Show only the fruit for the active season
+        fruitName = location.fruits[activeSeason];
+        if (!fruitName) return;
+        color = fruitColors[fruitName] || "#aaaaaa";
+        L.circleMarker(location.coords, {
+          radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
+        })
+        .bindPopup(`<b>${fruitName}</b>`)
+        .addTo(layers.fruits);
+      }
+    }
   });
 }
 drawFruits();
