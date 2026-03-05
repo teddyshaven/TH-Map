@@ -140,4 +140,4 @@ const fruitLocations = [
   { id: 116, coords: [3264, 2116], type: "seasonal", fruits: { spring: "Greenwhistle Apple", summer: "Sunapple", fall: "Amberfall Apple", winter: "Frostveil Apple" } },
   { id: 117, coords: [3257, 2082], type: "seasonal", fruits: { spring: "Greenwhistle Apple", summer: "Sunapple", fall: "Amberfall Apple", winter: "Frostveil Apple" } }
 ];
-];
+
