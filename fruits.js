@@ -17,7 +17,11 @@ const fruitLocations = [
   { id: 1, coords: [2349, 818], type: "persistent", fruit: "Azureberry" },
   { id: 2, coords: [2239, 873], type: "persistent", fruit: "Azureberry" },
   { id: 3, coords: [2302, 1251], type: "persistent", fruit: "Azureberry" },
-  { id: 4, coords: [2166, 1118], type: 2persistent", fruit: "Azureberry" }
+  { id: 4, coords: [2166, 1118], type: "persistent", fruit: "Azureberry" },
+
+  { id: 5, coords: [2626, 2456], type: "persistent", fruit: "Ghostberry" },
+  { id: 6, coords: [2697, 2376], type: "persistent", fruit: "Ghostberry" },  
+  { id: 6, coords: [2585, 2356], type: "persistent", fruit: "Ghostberry" }
 
   // SEASONAL example:
   // { id: 2, coords: [x, y], type: "seasonal", fruits: {
