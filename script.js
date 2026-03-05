@@ -143,6 +143,12 @@ creatureLocations.forEach(location => {
     const iconHtml = type.icon
       ? `<img src="${type.icon}" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto 6px auto;">`
       : "";
+    const resourceHtml = type.resource
+      ? `<span style="font-size:12px;color:#444;">${type.resource}</span>`
+      : "";
+    const infoHtml = type.info
+      ? `<div style="margin-top:4px;font-size:12px;color:#888;font-style:italic;">${type.info}</div>`
+      : "";
     const craftingHtml = type.crafting
       ? `<div style="margin-top:6px;font-size:11px;color:#666;"><b>Used in:</b> ${type.crafting}</div>`
       : "";
@@ -151,7 +157,8 @@ creatureLocations.forEach(location => {
       <div style="text-align:center;min-width:120px;">
         ${iconHtml}
         <b style="font-size:13px;">${name}</b><br>
-        <span style="font-size:12px;color:#444;">${type.resource || ""}</span>
+        ${resourceHtml}
+        ${infoHtml}
         ${craftingHtml}
       </div>`;
 
@@ -381,8 +388,10 @@ function highlightAllCoords(allCoords, category, label) {
       }).addTo(tempLayer);
 
       const iconHtml = ctype.icon ? `<img src="${ctype.icon}" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto 6px auto;">` : "";
+      const resourceHtml = ctype.resource ? `<span style="font-size:12px;color:#444;">${ctype.resource}</span>` : "";
+      const infoHtml = ctype.info ? `<div style="margin-top:4px;font-size:12px;color:#888;font-style:italic;">${ctype.info}</div>` : "";
       const craftingHtml = ctype.crafting ? `<div style="margin-top:6px;font-size:11px;color:#666;"><b>Used in:</b> ${ctype.crafting}</div>` : "";
-      popupHtml = `<div style="text-align:center;min-width:120px;">${iconHtml}<b style="font-size:13px;">${creatureName}</b><br><span style="font-size:12px;color:#444;">${ctype.resource || ""}</span>${craftingHtml}</div>`;
+      popupHtml = `<div style="text-align:center;min-width:120px;">${iconHtml}<b style="font-size:13px;">${creatureName}</b><br>${resourceHtml}${infoHtml}${craftingHtml}</div>`;
 
       L.circleMarker(coords, {
         radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
