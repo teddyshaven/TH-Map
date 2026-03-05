@@ -12,7 +12,6 @@ const layers = {
   fruits:          L.layerGroup().addTo(map),
   stone:           L.layerGroup().addTo(map),
   crystal:         L.layerGroup().addTo(map),
-  ore:             L.layerGroup().addTo(map),
   creatures:       L.layerGroup().addTo(map),
   magicalVisitors: L.layerGroup().addTo(map)
 };
@@ -52,6 +51,7 @@ const fruitColors = {
 
 // ---------------- ACTIVE SEASON ----------------
 let activeSeason = "spring";
+let activeFruit = ""; // empty = show all fruits for the season
 
 // ---------------- DRAW FRUITS ----------------
 function drawFruits() {
@@ -78,6 +78,8 @@ function drawFruits() {
         // Show only the fruit for the active season
         fruitName = location.fruits[activeSeason];
         if (!fruitName) return;
+        // If a specific fruit filter is active, skip non-matching locations
+        if (activeFruit && fruitName !== activeFruit) return;
         color = fruitColors[fruitName] || "#aaaaaa";
         L.circleMarker(location.coords, {
           radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
@@ -114,15 +116,6 @@ crystalLocations.forEach(location => {
   });
 });
 
-// ---------------- DRAW ORE ----------------
-oreLocations.forEach(location => {
-  L.circleMarker(location.coords, {
-    radius: 6, fillColor: "#c0c0c0", color: "#222", weight: 1, fillOpacity: 0.9
-  })
-  .bindPopup("<b>Ore</b>")
-  .addTo(layers.ore);
-});
-
 // ---------------- DRAW CREATURES ----------------
 creatureLocations.forEach(location => {
   (location.creatures || []).forEach(name => {
@@ -149,7 +142,6 @@ const toggleMap = {
   "toggle-fruits":           layers.fruits,
   "toggle-stone":            layers.stone,
   "toggle-crystal":          layers.crystal,
-  "toggle-ore":              layers.ore,
   "toggle-creatures":        layers.creatures,
   "toggle-magical-visitors": layers.magicalVisitors
 };
@@ -162,9 +154,30 @@ Object.entries(toggleMap).forEach(([id, layer]) => {
 // ---------------- SEASON FILTER ----------------
 document.querySelectorAll(".season-btn").forEach(btn => {
   btn.addEventListener("click", function () {
+    // Set active season
     document.querySelectorAll(".season-btn").forEach(b => b.classList.remove("active"));
     this.classList.add("active");
     activeSeason = this.dataset.season;
+    activeFruit = "";
+
+    // Show/hide dropdowns
+    document.querySelectorAll(".fruit-dropdown").forEach(d => d.classList.remove("open"));
+    const dropdown = document.getElementById("dropdown-" + activeSeason);
+    if (dropdown) dropdown.classList.add("open");
+
+    // Reset fruit filter buttons
+    document.querySelectorAll(".fruit-filter-btn").forEach(b => b.classList.remove("active"));
+
+    drawFruits();
+  });
+});
+
+// ---------------- FRUIT FILTER ----------------
+document.querySelectorAll(".fruit-filter-btn").forEach(btn => {
+  btn.addEventListener("click", function () {
+    document.querySelectorAll(".fruit-filter-btn").forEach(b => b.classList.remove("active"));
+    this.classList.add("active");
+    activeFruit = this.dataset.fruit; // empty string = show all
     drawFruits();
   });
 });
