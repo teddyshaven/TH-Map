@@ -30,4 +30,19 @@ const crystalLocations = [
   { id: 14, coords: [3034, 332], crystals: ["Fernbrite"] },
   { id: 15, coords: [3171, 565], crystals: ["Fernbrite"] },
   { id: 16, coords: [3171, 616], crystals: ["Fernbrite"] },
+
+  { id: 17, coords: [2360, 3628], crystals: ["Honeyglow"] },
+  { id: 18, coords: [2512, 3704], crystals: ["Honeyglow"] },
+  { id: 19, coords: [2302, 3690], crystals: ["Honeyglow"] },
+  { id: 20, coords: [3557, 1730], crystals: ["Honeyglow"] },
+  { id: 21, coords: [3607, 1706], crystals: ["Honeyglow"] },
+  { id: 22, coords: [3655, 1745], crystals: ["Honeyglow"] },
+  { id: 23, coords: [3667, 1790], crystals: ["Honeyglow"] },
+  { id: 24, coords: [3584, 1798], crystals: ["Honeyglow"] },
+
+  { id: 25, coords: [2934, 2495], crystals: ["Lunacite"] },
+
+  { id: 26, coords: [2836, 2480], crystals: ["Dark Lunacite"] },
+
+  { id: 27, coords: [3037, 2726], crystals: ["Starshard"] }
 ];
