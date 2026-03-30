@@ -57,7 +57,10 @@ function drawFruits() {
   layers.fruits.clearLayers();
   fruitLocations.forEach(location => {
     if (location.type === "persistent") {
+      // Only show persistent fruits when All Year is selected
+      if (activeSeason !== "all") return;
       const name = location.fruit;
+      if (activeFruit && name !== activeFruit) return;
       const color = fruitColors[name] || "#aaaaaa";
       L.circleMarker(location.coords, {
         radius: 6, fillColor: color, color: "#222", weight: 1, fillOpacity: 0.9
