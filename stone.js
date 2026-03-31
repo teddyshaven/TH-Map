@@ -67,5 +67,9 @@ const stoneLocations = [
   { id: 66, coords: [2075, 2439] },
   { id: 67, coords: [1730, 3065] },
   { id: 68, coords: [1758, 3041] },
-  { id: 69, coords: [2571, 3021] }
+  { id: 69, coords: [2571, 3021] },
+  { id: 70, coords: [1940, 2448] },
+  { id: 71, coords: [1852, 2400] },
+  { id: 72, coords: [1792, 2376] },
+  { id: 73, coords: [1716, 2360] }
 ];
